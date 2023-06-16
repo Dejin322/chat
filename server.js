@@ -20,32 +20,17 @@ app.get('/', (req, res) => {
 let users = 0
 
 const alexSpace = io.of('/alex');
-
+const DoomSpace = io.of('/Doom')
 io.on('connection', (S) => {
   let user = false
 
-  socket.on('set_username', (username) => {
-    if (username === 'Alex') {
-      socket.join('alex');
-      console.log(`Socket with ID ${socket.id} joined the Alex NameSpace`);
-    }
-  });
-
-  socket.on('new message', (data) => {
-    console.log(`Received message from socket with ID ${socket.id}: ${data}`);
-    
-    if (socket.rooms.has('alex')) { // проверяем, присоединился ли сокет к пространству имен Alex
-      // Отправить сообщение всем подключенным клиентам в пространстве имен Alex
-      alexSpace.emit('private_message', `Alex says: ${data}`);
-    }
-  });
 
   S.on('new message', (message) => {
     S.broadcast.emit('new message', { 
       username: S.username,
       message
     })
-  })
+  })  
 
   S.on('add user', (username) => {
     if (user) return
@@ -63,6 +48,17 @@ io.on('connection', (S) => {
       users
     })  
   })
+
+  S.on('add user', (username) => {
+    if (username === 'Alex') {
+      S.join('alex');
+      console.log(`Socket with ID ${S.id} joined the Alex NameSpace`);
+    }
+    if (username === 'Doom') {
+      S.join('Doom');
+      console.log(`Socket with ID ${S.id} joined the Doom NameSpace`);
+    }
+})
 
   S.on('typing', () => {
     S.broadcast.emit('typing', {

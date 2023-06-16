@@ -1,158 +1,339 @@
 * {
-    box-sizing: border-box;
-  }
-  
-  html {
-    font-weight: 300;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  html,
-  input {
-    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-  }
-  
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  ul {
-    list-style: none;
-    word-wrap: break-word;
-  }
-  
-  /* Pages */
-  
-  .pages {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-  
-  .login_page,
-  .chat_page {
-    height: 100%;
-    position: absolute;
-    width: 100%;
-  }
-  
-  /* Login Page */
-  
-  .login_page {
-    background-color: #000;
-  }
-  
-  .login_page .form {
-    height: 100px;
-    margin-top: -100px;
-    position: absolute;
-    text-align: center;
-    top: 50%;
-    width: 100%;
-  }
-  
-  .login_page .form .username_input {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid #fff;
-    outline: none;
-    padding-bottom: 15px;
-    text-align: center;
-    width: 400px;
-  }
-  
-  .login_page .title {
-    font-size: 200%;
-  }
-  
-  .login_page .username_input {
-    font-size: 200%;
-    letter-spacing: 3px;
-  }
-  
-  .login_page .title,
-  .login_page .username_input {
-    color: #fff;
-    font-weight: 100;
-  }
-  
-  /* Chat page */
-  
-  .chat_page {
-    display: none;
-  }
-  
-  /* Font */
-  
-  .messages {
-    font-size: 150%;
-  }
-  
-  .message_input {
-    font-size: 100%;
-  }
-  
-  .log {
-    color: gray;
-    font-size: 70%;
-    margin: 5px;
-    text-align: center;
-  }
-  
-  /* Messages */
-  
-  .chat_area {
-    height: 100%;
-    width: 70%;
-    padding-bottom: 60px;
-  }
-  
-  .messages {
-    height: 100%;
-    margin: 0;
-    overflow-y: scroll;
-    padding: 10px 20px 10px 20px;
-  }
-  
-  .message.typing .message_body {
-    color: gray;
-  }
-  
-  .username {
-    font-weight: 700;
-    overflow: hidden;
-    padding-right: 15px;
-    text-align: right;
-  }
-  
-  /* Input */
-  
-  .message_input {
-    border: 10px solid #000;
-    bottom: 0;
-    height: 60px;
-    left: 0;
-    outline: none;
-    padding-left: 10px;
-    position: absolute;
-    right: 0;
-    width: 70%;
+  box-sizing: border-box;
+}
 
+html {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+input {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+/* Pages */
+
+.pages {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.login_page,
+.chat_page {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+/* Login Page */
+
+.login_page {
+  background-color: #000;
+}
+
+.login_page .form {
+  height: 100px;
+  margin-top: -100px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+.login_page .form .username_input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.login_page .title {
+  font-size: 200%;
+}
+
+.login_page .username_input {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
+.login_page .title,
+.login_page .username_input {
+  color: #fff;
+  font-weight: 100;
+}
+
+/* Chat page */
+
+.chat_page {
+  display: none;
+}
+
+/* Font */
+
+.messages {
+  font-size: 150%;
+}
+
+.message_input {
+  font-size: 100%;
+}
+
+.log {
+  color: gray;
+  font-size: 70%;
+  margin: 5px;
+  text-align: center;
+}
+
+/* Messages */
+
+.chat_area {
+  height: 100%;
+  width: 70%;
+  padding-bottom: 60px;
+}
+
+.messages {
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 10px 20px 10px 20px;
+}
+
+.message.typing .message_body {
+  color: gray;
+}
+
+.username {
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  text-align: right;
+}
+
+/* Input */
+
+.message_input {
+  border: 10px solid #000;
+  bottom: 0;
+  height: 60px;
+  left: 0;
+  outline: none;
+  padding-left: 10px;
+  position: absolute;
+  right: 0;
+  width: 70%;
+
+}
+
+.chat_info {
+  position: absolute;
+  width: 30%;
+  left: 70%;
+  top: 0%;
+  bottom: 0%;
+  background: #8BADA3;
+}
+
+.user-list li {
+  padding: 5px;
+  background-color: #8BADA3;
+  border-bottom: 1px solid #ddd;
+} 
+.bullet {
+  margin-left: 0;
+  list-style: none;
+  counter-reset: li;
+}
+
+.bullet li {
+  position: relative;
+  margin-bottom: 1.5em;
+  border: 3px solid #CADFCF;
+  padding: 0.6em;
+  border-radius: 4px;
+  background: #FEFEFE;
+  color: #231F20;
+  font-family: "Trebuchet MS", "Lucida Sans";
+}
+
+.bullet li:before {
+  position: absolute;
+  top: -0.7em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  font-size: 16px;
+  font-weight: bold;
+  color: #DCC24B;
+  background: #FEFEFE;
+  border-radius: 50%;
+  counter-increment: li;
+  content: counter(li);
+}
+.private_chat_area {
+  height: 100%;
+  width: 70%;
+  padding-bottom: 60px;
+}
+
+.itc-modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: rgb(0 0 0 / 50%);
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+  pointer-events: none;
+}
+
+.itc-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin: 10px;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 0.3rem;
+  box-shadow: 0 0 7px 0 rgb(0 0 0 / 30%);
+  transition: opacity 0.3s ease-in;
+  overflow: visible;
+  transform: none;
+}
+
+@media (min-width: 576px) {
+  .itc-modal-content {
+    max-width: 1000px;
+    height: 500px;
+    margin: 50px auto;
   }
-  .userListDiv{
-    position: absolute;
-    width: 30%;
-    left: 70%;
-    top: 0%;
-    bottom: 0%;
-    background: #8BADA3;
-  }
-  .user-list li {
-    padding: 5px;
-    background-color: #8BADA3;
-    border-bottom: 1px solid #ddd;
-  }
+}
+
+.itc-modal-show .itc-modal-backdrop,
+.itc-modal-show .itc-modal-content {
+  z-index: 1050;
+  overflow-y: auto;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.itc-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eceeef;
+}
+
+.itc-modal-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.itc-modal-btn-close {
+  float: right;
+  color: #000;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: sans-serif;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+}
+
+.itc-modal-btn-close:focus,
+.itc-modal-btn-close:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.itc-modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 15px;
+  overflow: auto;
+}
+
+.itc-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+  border-top: 1px solid #e9ecef;
+  border-bottom-right-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+
+
+
+.private_area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+.privateMessageDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background-color: #8BADA3;
+}
+
+.private_messages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.private_input {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+}
+
+.private_send {
+  background-color: black;
+  color: white;
+  padding: 16px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  font-size: 16px;
+}
+
+.private_send:hover {
+  transition: 0.5s;
+  background-color: gray;
+}
