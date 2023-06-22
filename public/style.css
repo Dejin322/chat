@@ -301,7 +301,7 @@ ul {
   justify-content: center;
   height: 300px;
 }
-.privateMessageDiv {
+.roomMessageDiv {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -309,7 +309,7 @@ ul {
   background-color: #8BADA3;
 }
 
-.private_messages {
+.roomMessages {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -317,13 +317,13 @@ ul {
   overflow-y: auto;
 }
 
-.private_input {
+.roomInput {
   width: 100%;
   padding: 15px;
   font-size: 16px;
 }
 
-.private_send {
+.roomSend {
   background-color: black;
   color: white;
   padding: 16px;
@@ -333,7 +333,7 @@ ul {
   font-size: 16px;
 }
 
-.private_send:hover {
+.roomSend:hover {
   transition: 0.5s;
   background-color: gray;
 }

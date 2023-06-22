@@ -1,3 +1,4 @@
+const { Socket } = require('dgram');
 const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
@@ -9,7 +10,7 @@ app.set("view engine", "ejs");
 
 const PORT = process.env.PORT || 3000
 server.listen(PORT, () => {
-  console.log(`Server ready. Port: ${PORT}`)
+  console.log(`Сервер запущен. Port: ${PORT}`)
 })
 
 app.use(express.static(__dirname))
@@ -18,9 +19,6 @@ app.get('/', (req, res) => {
 	res.render('chat')
 })
 let users = 0
-
-const alexSpace = io.of('/alex');
-const DoomSpace = io.of('/Doom')
 io.on('connection', (S) => {
   let user = false
 
@@ -38,8 +36,15 @@ io.on('connection', (S) => {
     S.username = username
     ++users
     user = true
-    console.log(S.username + " " + "connected")
-    S.emit('login', {
+    console.log(S.username + " " + "присоединился")
+     
+    if (username === 'Petya' || username === 'Ivan') { 
+      S.join(username); 
+      console.log(`${S.id} присоединился к комнате ${username}`); 
+      S.emit('roomJoined', username); 
+    } 
+    io.in(username).emit('RoomWelcome', `Добро пожаловать в чат, ${username}!`);
+    S.emit('login', { 
       users
     })
 
@@ -49,16 +54,12 @@ io.on('connection', (S) => {
     })  
   })
 
-  S.on('add user', (username) => {
-    if (username === 'Alex') {
-      S.join('alex');
-      console.log(`Socket with ID ${S.id} joined the Alex NameSpace`);
-    }
-    if (username === 'Doom') {
-      S.join('Doom');
-      console.log(`Socket with ID ${S.id} joined the Doom NameSpace`);
-    }
-})
+  S.on('RoomMessage', (message) => {
+    S.broadcast.emit('RoomMessage', { 
+      username: S.username,
+      message
+    })
+  }) 
 
   S.on('typing', () => {
     S.broadcast.emit('typing', {

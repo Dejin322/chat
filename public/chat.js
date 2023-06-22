@@ -31,9 +31,9 @@ const $loginPage = findOne('.login_page')
 const $chatPage = findOne('.chat_page')
 
 const $user_list = findOne('.userListDiv')
-const $privateMessageDiv = findOne('.privateMessageDiv')
-const $private_input = findOne('.private_input')
-const $private_send = findOne('.private_send')
+const $roomMessages = findOne('.roomMessages')
+const $roomInput = findOne('.roomInput')
+const $roomSend = findOne('.roomSend')
 // глобальные переменные
 const S = io()
 
@@ -49,12 +49,13 @@ $currentInput.focus()
 const addParticipants = ({ users }) => {
   let message = ''
   if (users === 1) {
-    message += `there's 1 participant`
+    message += `Есть 1 участник`
   } else {
-    message += `there are ${users} participants`
+    message += `Есть ${users} участников`
   }
   log(message)
 }
+let userList = []
 
 const setUsername = () => {
   username = $usernameInput.value.trim()
@@ -62,11 +63,10 @@ const setUsername = () => {
   if (username) {
     hides($loginPage)
     shows($chatPage)
-
     $loginPage.onclick = () => false
-
     $currentInput = $messageInput
-
+ 
+  
 
     S.emit('add user', username)
   }
@@ -169,7 +169,7 @@ const getUsernameColor = (username) => {
 
 // обработчики
 window.onkeydown = (e) => {
-  if (!(e.ctrlKey || e.metaKey || e.altKey)) $currentInput.focus()
+  // if (!(e.ctrlKey || e.metaKey || e.altKey)) $currentInput.focus()
 
   if (e.which === 13) {
     if (username) {
@@ -194,30 +194,6 @@ $chatPage.onclick = () => {
   $messageInput.focus()
 }
 
-// class Alex {
-//   #elem
-//   #template = '<div class="itc-modal-backdrop"><div class="itc-modal-content"><div class="itc-modal-header"><div class="itc-modal-title">{{title}}</div><span class="itc-modal-btn-close" title="Закрыть">×</span></div><div class="itc-modal-body">{{content}}</div>{{footer}}</div></div>';
-//   title = 'Личный час с Alex'
-//   content = '<div class="private_area"> <ul class="private_messages"></ul> </div> <div class="privateMessageDiv"> <input type="text" class="private_input" placeholder="Type here..."> <button type="button" class="private_send">send message</button> </div>'
-//   footerButtons = [
-//     { class: 'btn btn-send', text: 'Отправить', action: 'send' },
-//     { class: 'btn btn-close', text: 'Закрыть', action: 'close' },
-//   ]
-
-//   constructor(elem) {
-//     this.#elem = elem
-    
-//   }
-
-//   show() {
-//     this.#elem.innerHTML = this.#template
-//   }
-
-//   hide() {
-//     this.#elem.removeChild('.itc-modal-backdrop')
-//   }
-// }
-// const modalAlex = new Alex(document.querySelector('#window'));
 class ItcModal {
   #elem;
   #template = '<div class="itc-modal-backdrop"><div class="itc-modal-content"><div class="itc-modal-header"><div class="itc-modal-title">{{title}}</div><span class="itc-modal-btn-close" title="Закрыть">×</span></div><div class="itc-modal-body">{{content}}</div>{{footer}}</div></div>';
@@ -277,101 +253,69 @@ class ItcModal {
     this.#elem.querySelector('.itc-modal-title').innerHTML = text;
   }
 }
-const modalAlex = new ItcModal({
-  title: 'Личный час с Alex',
-  content: '<div class="private_area"> <ul class="private_messages"></ul> </div> <div class="privateMessageDiv"> <input type="text" class="private_input" placeholder="Type here..."> <button type="button" class="private_send">send message</button> </div>',
-})
-
-const modalDoom = new ItcModal({
-  title: 'Личный час с Doom',
-  content: '<div class="private_area"> <ul class="private_messages"></ul> </div> <div class="privateMessageDiv"> <input type="text" class="private_input" placeholder="Type here..."> <button type="button" class="private_send">send message</button> </div>',
-})
 
 
-const NameSpace = ['Alex', 'Doom'];
-const ul = document.createElement('ul');
 
-ul.classList.add('bullet')
 
-function openAlex(){
-  modalAlex.show()
-};
-function openDoom(){  
-  modalAlex.show()
+  const RoomList = ['Ivan', 'Petya']
+  const ul = findOne('.UserList')
+  ul.classList.add('bullet')
+  RoomList.forEach(item => {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(item));
+    li.addEventListener('click', () => {
+      CreateModal(item)
+      console.log('Вы нажали на элемент ' + item);
+    })
+    ul.appendChild(li)
+  })
+
+const CreateModal = (item) => {
+  const modalName = item
+  const modalWindow = new ItcModal({
+    title: 'Личный час с'+ ' ' + modalName,
+    content: '<div class="private_area"> <ul class="roomMessages"></ul> </div> <div class="roomMessageDiv"> <input type="text" class="roomInput" placeholder="Type here..."> <button type="button" class="roomSend">send message</button> </div>',
+  })
+  modalWindow.show()
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  // Ищем элементы после загрузки страницы
+  const $roomSend = document.querySelector('.roomSend')
+  const $roomInput = document.querySelector('.roomInput')
 
-NameSpace.forEach(item => {
-  const li = document.createElement('li');
-  li.appendChild(document.createTextNode(item));
-  li.addEventListener('click', () => {
-    switch (item) {
-      case 'Alex':
-        openAlex()
-        break;
-      case 'Doom':
-        openDoom()
-        break;
-      default:
-        break;
-    }
-    console.log('Вы нажали на элемент ' + item);
-  });
-  ul.appendChild(li);
-});
+$roomSend.addEventListener('click', () => {
+  const message = $roomInput.value.trim()
+  if (message) {
+    console.log(message)
+    addRoomMessage({ username, message })
 
-$user_list.appendChild(ul)
-
-const sendPrivateMessage = () => { 
-  $private_send.addEventListener('click', ()=> {
-  const message = $private_input.value().trim() 
-
-  if (message && connected) { 
-    $private_input.value() = '' 
-    addPrivateMessage({message }) 
-    S.emit('new private message', message) 
-} 
+    S.emit('RoomMessage', message)
+  }
 })
+const addRoomMessage = (data) => {
+  const html = `
+    <li
+      class="RoomMessage ${typingClass}"
+      data-username="${data.username}"
+    >
+      <span class="RoomMessage_body">
+        ${data.message}
+      </span>
+    </li>
+  `
+
+  addRoomMessageEl(html)
 }
-
-const addPrivateMessage = (message) => { 
-  S.on('add user', (data)=>{
-  const html = ` 
-    <li class="privateMessage"> 
-      <span 
-        class="username" 
-        style="color: ${getUsernameColor(data.username)};" 
-      > 
-        ${data.username}: 
-      </span> 
-      <span class="message_body"> 
-        ${message.message} 
-      </span> 
-    </li> 
-  ` 
- 
-  $privateMessageDiv.innerHTML += html 
 })
-} 
-
-// // Подключение к обработчику кнопки "Отправить"
-// $private_send.addEventListener('click', () => {
-//   const message = $private_input.value;
-//   if (message === '') {
-//       return;
-//   }
-
-//   // Отправка сообщения в выбранное пространство имён
-//   io.of('/alex').emit('new private message', message);
-
-//   // Очистка поля ввода сообщений
-//   $private_input.value = '';
-// });
+const addRoomMessageEl = (html) => {
+  $roomMessages.innerHTML += html
+}
 
 // сокет
 S.on('login', (data) => {
   connected = true
-  log(`Welcome to Yokoso - `)
+  log(`Добро пожаловать в Yokoso - `)
   addParticipants(data)
 })
 
@@ -379,13 +323,23 @@ S.on('new message', (data) => {
   addChatMessage(data)
 })
 
+S.on('RoomWelcome', (msg) => { 
+  console.log(`Новое сообщение: ${msg}`); 
+}); 
+
+S.on('RoomMessage', (data) => {
+  addRoomMessage(data)
+  console.log(data)
+})
+
 S.on('user joined', (data) => {
-  log(`${data.username} joined`)
+  log(`${data.username} Присоединился`)
   addParticipants(data)
+  
 })
 
 S.on('user left', (data) => {
-  log(`${data.username} left`)
+  log(`${data.username} Вышел`)
   addParticipants(data)
   removeChatTyping(data)
 })
@@ -399,16 +353,16 @@ S.on('stop typing', (data) => {
 })
 
 S.on('disconnect', () => {
-  log('You have been disconnected')
+  log('Вы были отключены')
 })
 
 S.on('reconnect', () => {
-  log('You have been reconnected')
+  log('Вы были переподключены')
   if (username) {
     S.emit('add user', username)
   }
 })
 
 S.on('reconnect_error', () => {
-  log('Attempt to reconnect has failed')
+  log('Попытка повторного подключения завершилась неудачей')
 })
