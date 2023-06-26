@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 	res.render('chat')
 })
 let users = 0
+const Users = []
 io.on('connection', (S) => {
   let user = false
 
@@ -36,12 +37,11 @@ io.on('connection', (S) => {
     S.username = username
     ++users
     user = true
-    console.log(S.username + " " + "присоединился")
-     
-    if (username === 'Petya' || username === 'Ivan') { 
+    Users.push(username)
+    S.emit('roomList', Users)
+    if (username) {   
       S.join(username); 
-      console.log(`${S.id} присоединился к комнате ${username}`); 
-      S.emit('roomJoined', username); 
+      console.log(`${S.id} присоединился c именем пользователя: ${username}`); 
     } 
     io.in(username).emit('RoomWelcome', `Добро пожаловать в чат, ${username}!`);
     S.emit('login', { 
@@ -52,13 +52,9 @@ io.on('connection', (S) => {
       username: S.username,
       users
     })  
-  })
-
+  })   
   S.on('RoomMessage', (message) => {
-    S.broadcast.emit('RoomMessage', { 
-      username: S.username,
-      message
-    })
+    io.in(S.username).emit('RoomMessage', (message))
   }) 
 
   S.on('typing', () => {

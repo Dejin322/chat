@@ -31,9 +31,7 @@ const $loginPage = findOne('.login_page')
 const $chatPage = findOne('.chat_page')
 
 const $user_list = findOne('.userListDiv')
-const $roomMessages = findOne('.roomMessages')
-const $roomInput = findOne('.roomInput')
-const $roomSend = findOne('.roomSend')
+
 // глобальные переменные
 const S = io()
 
@@ -65,8 +63,8 @@ const setUsername = () => {
     shows($chatPage)
     $loginPage.onclick = () => false
     $currentInput = $messageInput
- 
-  
+
+
 
     S.emit('add user', username)
   }
@@ -254,13 +252,13 @@ class ItcModal {
   }
 }
 
-
-
-
-  const RoomList = ['Ivan', 'Petya']
+const RoomList = (data) =>{
+  const RoomList = data
   const ul = findOne('.UserList')
+  ul.innerHTML = ''
   ul.classList.add('bullet')
   RoomList.forEach(item => {
+    console.log(RoomList)
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(item));
     li.addEventListener('click', () => {
@@ -269,47 +267,35 @@ class ItcModal {
     })
     ul.appendChild(li)
   })
-
+  S.emit('UserList')
+}
 const CreateModal = (item) => {
   const modalName = item
   const modalWindow = new ItcModal({
-    title: 'Личный час с'+ ' ' + modalName,
-    content: '<div class="private_area"> <ul class="roomMessages"></ul> </div> <div class="roomMessageDiv"> <input type="text" class="roomInput" placeholder="Type here..."> <button type="button" class="roomSend">send message</button> </div>',
+    title: 'Личный час с' + ' ' + modalName,
+    content: '<div class="private_area"> <ul class="roomMsg"></ul> </div> <div class="roomMessageDiv"> <input type="text" class="roomInput" placeholder="Type here..."> <button type="button" class="roomSend">send message</button> </div>',
   })
   modalWindow.show()
+  AddMsgRoom(item)
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Ищем элементы после загрузки страницы
-  const $roomSend = document.querySelector('.roomSend')
-  const $roomInput = document.querySelector('.roomInput')
-
-$roomSend.addEventListener('click', () => {
-  const message = $roomInput.value.trim()
-  if (message) {
-    console.log(message)
-    addRoomMessage({ username, message })
+const AddMsgRoom = (item) => {
+  let roomMessages = findOne('.roomMsg')
+  let roomInput = findOne('.roomInput')
+  let roomSend = findOne('.roomSend')
+  S.on('RoomMessage', (data) => {
+    let msg = data
+    console.log(msg)
+    roomMessages.innerHTML += '<div class="msg">' + item + ' - ' + msg + '</div'
+  })
+  roomSend.addEventListener('click', () => {
+    let message = roomInput.value
 
     S.emit('RoomMessage', message)
-  }
-})
-const addRoomMessage = (data) => {
-  const html = `
-    <li
-      class="RoomMessage ${typingClass}"
-      data-username="${data.username}"
-    >
-      <span class="RoomMessage_body">
-        ${data.message}
-      </span>
-    </li>
-  `
 
-  addRoomMessageEl(html)
-}
-})
-const addRoomMessageEl = (html) => {
-  $roomMessages.innerHTML += html
+    roomInput.value = ''
+  }
+  )
 }
 
 // сокет
@@ -323,21 +309,18 @@ S.on('new message', (data) => {
   addChatMessage(data)
 })
 
-S.on('RoomWelcome', (msg) => { 
-  console.log(`Новое сообщение: ${msg}`); 
-}); 
-
-S.on('RoomMessage', (data) => {
-  addRoomMessage(data)
-  console.log(data)
-})
+S.on('RoomWelcome', (msg) => {
+  console.log(`Новое сообщение: ${msg}`);
+});
 
 S.on('user joined', (data) => {
   log(`${data.username} Присоединился`)
   addParticipants(data)
-  
-})
 
+})
+S.on('roomList', (data) => {
+RoomList(data)
+})
 S.on('user left', (data) => {
   log(`${data.username} Вышел`)
   addParticipants(data)
